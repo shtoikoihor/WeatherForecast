@@ -10,7 +10,7 @@ const BASE_URL = "https://api.openweathermap.org";
 const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 
 export const getWeatherKind = (icon: string): WeatherKind => {
-  const code = icon.slice(0, 2); //'04n' => '04'
+  const code = icon.slice(0, 2);
 
   if (code === "01") {
     return "sun";
@@ -91,8 +91,16 @@ export const getForecast = async (
   }
 
   const data = await response.json();
-
-  const hourly: HourlyForecast[] = data.list.slice(0, 8).map((item) => {
+  const dayNames = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  const hourly: HourlyForecast[] = data.list.slice(0, 8).map((item: any) => {
     const [, time] = item.dt_txt.split(" ");
 
     return {
@@ -104,7 +112,7 @@ export const getForecast = async (
 
   const grouped: Record<string, any[]> = {};
 
-  data.list.forEach((item) => {
+  data.list.forEach((item: any) => {
     const [date] = item.dt_txt.split(" ");
 
     if (!grouped[date]) {
@@ -126,7 +134,7 @@ export const getForecast = async (
     const iconSource = noonEntry ?? group[0];
 
     return {
-      currentDay: date,
+      currentDay: dayNames[new Date(date).getDay()],
       tempMin,
       tempMax,
       kind: getWeatherKind(iconSource.weather[0].icon),

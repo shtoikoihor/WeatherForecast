@@ -1,3 +1,4 @@
+//#region shared skeleton
 .skeleton {
   background: #e5e7eb;
   border-radius: 6px;
@@ -13,26 +14,9 @@
     opacity: 0.9;
   }
 }
+//#endregion
 
-.skeletonIcon {
-  width: 80px;
-  height: 80px;
-  border-radius: 40px;
-}
-
-.skeletonText {
-  width: 120px;
-  height: 20px;
-}
-
-.loadingCard {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  padding: 24px;
-}
-
+//#region current
 .currentCard {
   display: flex;
   flex-direction: column;
@@ -60,7 +44,186 @@
 }
 
 .minMax {
+  display: flex;
+  gap: 10px;
   color: #6b7280;
   font-weight: 400;
   font-size: 14px;
 }
+
+.skeletonIcon {
+  width: 80px;
+  height: 80px;
+  border-radius: 40px;
+}
+
+.skeletonText {
+  width: 132px;
+  height: 20px;
+}
+
+.currentErrorIcon {
+  width: 80px;
+  height: 80px;
+}
+
+.currentErrorText {
+  font-size: 12px;
+  color: #ef4444;
+}
+//#endregion
+
+//#region hourly
+.hourlyContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 60px;
+  height: 90px;
+  padding: 8px;
+  border-radius: 12px;
+  background: #f9fafb;
+  flex-shrink: 0;
+}
+
+.hourlyLabel {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.hourlyIcons {
+  width: 28px;
+  height: 28px;
+}
+
+.hourlyTemp {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.skeletonHourlyIcon {
+  width: 28px;
+  height: 28px;
+  border-radius: 14px;
+}
+
+.skeletonHourlyText {
+  width: 30px;
+  height: 10px;
+}
+
+.hourlyErrorIcon {
+  width: 28px;
+  height: 28px;
+}
+
+.hourlyErrorText {
+  font-size: 10px;
+  color: #ef4444;
+  text-align: center;
+  line-height: 1.1;
+}
+//#endregion
+
+//#region daily
+.dailyRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #e5e7eb;
+  width: 100%;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.dailyDay {
+  width: 40px;
+  font-size: 14px;
+}
+
+.dailyIcon {
+  width: 24px;
+  height: 24px;
+}
+
+.dailyTemps {
+  display: flex;
+  gap: 4px;
+  font-size: 14px;
+}
+
+.dailyTempMin {
+  color: #9ca3af;
+}
+
+.dailyTempMax {
+  color: #111827;
+}
+
+.skeletonDailyRow {
+  width: 100%;
+  height: 12px;
+}
+
+.dailyErrorIcon {
+  width: 24px;
+  height: 24px;
+}
+
+.dailyErrorText {
+  font-size: 12px;
+  color: #ef4444;
+}
+//#endregion
+
+//#region metric
+.metricCard {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px;
+  border-radius: 12px;
+  background: #f3f4f6;
+}
+
+.metricIcon {
+  width: 20px;
+  height: 20px;
+}
+
+.metricLabel {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.metricValue {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.skeletonMetricIcon {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+}
+
+.skeletonMetricText {
+  width: 56px;
+  height: 10px;
+}
+
+.metricErrorIcon {
+  width: 20px;
+  height: 20px;
+}
+
+.metricErrorText {
+  font-size: 12px;
+  color: #ef4444;
+}
+//#endregion

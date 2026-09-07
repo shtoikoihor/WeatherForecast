@@ -13,6 +13,7 @@ import humidityIcon from "../../assets/metric-icons/humidity.svg";
 import windIcon from "../../assets/metric-icons/wind.svg";
 import feelsIcon from "../../assets/metric-icons/feels.svg";
 import uvIcon from "../../assets/metric-icons/uv.svg";
+import errorIcon from "../../assets/error/error.svg";
 import styles from "./WeatherCard.module.scss";
 //#endregion
 
@@ -78,29 +79,29 @@ export const WeatherCard = ({
   const iconSrc = kind ? weatherIcons[kind] : undefined;
   const metricIconSrc = metricIcon ? weatherMetricIcons[metricIcon] : undefined;
 
-  if (state === "loading") {
-    return (
-      <div className={styles.loadingCard}>
-        <div className={`${styles.skeleton} ${styles.skeletonIcon}`} />
-        <div className={`${styles.skeleton} ${styles.skeletonText}`} />
-      </div>
-    );
-  }
-
-  if (state === "error") {
-    return <div>Ой... Помилка!</div>;
-  }
-
-  if (type === "daily") {
-    return (
-      <div>
-        <img src={iconSrc} alt={kind} />
-        {label} {formatTemp(tempMin)} / {formatTemp(tempMax)}
-      </div>
-    );
-  }
-
   if (type === "current") {
+    if (state === "loading") {
+      return (
+        <div className={styles.currentCard}>
+          <div className={`${styles.skeleton} ${styles.skeletonIcon}`} />
+          <div className={`${styles.skeleton} ${styles.skeletonText}`} />
+        </div>
+      );
+    }
+
+    if (state === "error") {
+      return (
+        <div className={styles.currentCard}>
+          <img
+            className={styles.currentErrorIcon}
+            src={errorIcon}
+            alt="error"
+          />
+          <p className={styles.currentErrorText}>Failed to load data</p>
+        </div>
+      );
+    }
+
     return (
       <div className={styles.currentCard}>
         <img className={styles.currentIcon} src={iconSrc} alt={description} />
@@ -117,21 +118,91 @@ export const WeatherCard = ({
   }
 
   if (type === "hourly") {
-    return (
-      <>
+    if (state === "loading") {
+      return (
         <div className={styles.hourlyContainer}>
-          <img className={styles.hourlyIcons} src={iconSrc} alt={kind} />
-          {label} {formatTemp(temperature)}
+          <div className={`${styles.skeleton} ${styles.skeletonHourlyText}`} />
+          <div className={`${styles.skeleton} ${styles.skeletonHourlyIcon}`} />
+          <div className={`${styles.skeleton} ${styles.skeletonHourlyText}`} />
         </div>
-      </>
+      );
+    }
+
+    if (state === "error") {
+      return (
+        <div className={styles.hourlyContainer}>
+          <span className={styles.hourlyLabel}>{label}</span>
+          <img className={styles.hourlyErrorIcon} src={errorIcon} alt="error" />
+          <span className={styles.hourlyErrorText}>Error</span>
+        </div>
+      );
+    }
+
+    return (
+      <div className={styles.hourlyContainer}>
+        <span className={styles.hourlyLabel}>{label}</span>
+        <img className={styles.hourlyIcons} src={iconSrc} alt={kind} />
+        <span className={styles.hourlyTemp}>{formatTemp(temperature)}</span>
+      </div>
+    );
+  }
+
+  if (type === "daily") {
+    if (state === "loading") {
+      return (
+        <div className={styles.dailyRow}>
+          <div className={`${styles.skeleton} ${styles.skeletonDailyRow}`} />
+        </div>
+      );
+    }
+
+    if (state === "error") {
+      return (
+        <div className={styles.dailyRow}>
+          <span className={styles.dailyDay}>{label}</span>
+          <img className={styles.dailyErrorIcon} src={errorIcon} alt="error" />
+          <span className={styles.dailyErrorText}>Failed to load</span>
+        </div>
+      );
+    }
+
+    return (
+      <div className={styles.dailyRow}>
+        <span className={styles.dailyDay}>{label}</span>
+        <img className={styles.dailyIcon} src={iconSrc} alt={kind} />
+        <div className={styles.dailyTemps}>
+          <span className={styles.dailyTempMin}>{formatTemp(tempMin)}</span>
+          <span className={styles.dailyTempMax}>{formatTemp(tempMax)}</span>
+        </div>
+      </div>
     );
   }
 
   if (type === "metric") {
+    if (state === "loading") {
+      return (
+        <div className={styles.metricCard}>
+          <div className={`${styles.skeleton} ${styles.skeletonMetricIcon}`} />
+          <div className={`${styles.skeleton} ${styles.skeletonMetricText}`} />
+        </div>
+      );
+    }
+
+    if (state === "error") {
+      return (
+        <div className={styles.metricCard}>
+          <img className={styles.metricErrorIcon} src={errorIcon} alt="error" />
+          <span className={styles.metricLabel}>{label}</span>
+          <span className={styles.metricErrorText}>Failed to load</span>
+        </div>
+      );
+    }
+
     return (
-      <div>
-        <img src={metricIconSrc} alt={label} />
-        {label} {value}
+      <div className={styles.metricCard}>
+        <img className={styles.metricIcon} src={metricIconSrc} alt={label} />
+        <span className={styles.metricLabel}>{label}</span>
+        <span className={styles.metricValue}>{value}</span>
       </div>
     );
   }

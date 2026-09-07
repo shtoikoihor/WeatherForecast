@@ -6,11 +6,13 @@ import { WeatherCard } from "../components/WeatherCard/WeatherCard";
 import { HourlyForecast } from "../components/HourlyForecast/HourlyForecast";
 import { DailyForecast } from "../components/DailyForecast/DailyForecast";
 import { MetricsGrid } from "../components/MetricsGrid/MetricsGrid";
+import styles from "./WeatherDashboardPage.module.scss";
 
 export const WeatherDashboardPage = () => {
   const dispatch = useAppDispatch();
   const data = useAppSelector((state) => state.weather.data);
   const loading = useAppSelector((state) => state.weather.loading);
+  const currentError = useAppSelector((state) => state.weather.currentError);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
@@ -20,12 +22,21 @@ export const WeatherDashboardPage = () => {
     });
   }, []);
 
+  if (loading) {
+    return (
+      <div className={styles.loadingPage}>
+        <div className={`${styles.skeleton} ${styles.skeletonHeader}`} />
+        <div className={`${styles.skeleton} ${styles.skeletonMain}`} />
+      </div>
+    );
+  }
+
   return (
     <div>
       <Header />
       <WeatherCard
         type="current"
-        state={loading ? "loading" : "default"}
+        state={currentError ? "error" : "default"}
         temperature={data?.temperature}
         description={data?.description}
         kind={data?.kind}

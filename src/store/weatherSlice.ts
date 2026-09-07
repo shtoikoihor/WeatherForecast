@@ -11,7 +11,8 @@ interface WeatherState {
   hourly: HourlyForecast[];
   daily: DailyForecast[];
   loading: boolean;
-  error: string | null;
+  currentError: string | null;
+  forecastError: string | null;
 }
 
 const initialState: WeatherState = {
@@ -19,7 +20,8 @@ const initialState: WeatherState = {
   hourly: [],
   daily: [],
   loading: false,
-  error: null,
+  currentError: null,
+  forecastError: null,
 };
 
 export const fetchCurrentWeather = createAsyncThunk(
@@ -47,7 +49,7 @@ const weatherSlice = createSlice({
     builder
       .addCase(fetchCurrentWeather.pending, (state) => {
         state.loading = true;
-        state.error = null;
+        state.currentError = null;
       })
       .addCase(fetchCurrentWeather.fulfilled, (state, action) => {
         state.loading = false;
@@ -55,11 +57,11 @@ const weatherSlice = createSlice({
       })
       .addCase(fetchCurrentWeather.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message ?? "Не вдалось завантажити дані";
+        state.currentError = action.error.message ?? "Something went wrong!";
       })
       .addCase(fetchForecast.pending, (state) => {
         state.loading = true;
-        state.error = null;
+        state.forecastError = null;
       })
       .addCase(fetchForecast.fulfilled, (state, action) => {
         state.loading = false;
@@ -68,7 +70,7 @@ const weatherSlice = createSlice({
       })
       .addCase(fetchForecast.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message ?? "Не вдалось завантажити дані";
+        state.forecastError = action.error.message ?? "Failed to load data";
       });
   },
 });

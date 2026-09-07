@@ -1,0 +1,34 @@
+//#region loading
+.skeleton {
+  background: #e5e7eb;
+  border-radius: 6px;
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+
+.loadingPage {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+}
+
+.skeletonHeader {
+  width: 100%;
+  height: 32px;
+}
+
+.skeletonMain {
+  width: 100%;
+  height: 300px;
+  border-radius: 20px;
+}

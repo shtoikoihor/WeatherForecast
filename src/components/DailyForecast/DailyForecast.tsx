@@ -1,11 +1,21 @@
 import { useAppSelector } from "../../store/hooks";
 import { WeatherCard } from "../WeatherCard/WeatherCard";
+import styles from "./DailyForecast.module.scss";
 
 export const DailyForecast = () => {
   const daily = useAppSelector((state) => state.weather.daily);
+  const forecastError = useAppSelector((state) => state.weather.forecastError);
+
+  if (forecastError) {
+    return (
+      <div className={styles.container}>
+        <WeatherCard type="daily" state="error" />
+      </div>
+    );
+  }
 
   return (
-    <div>
+    <div className={styles.container}>
       {daily.map((item) => (
         <WeatherCard
           key={item.currentDay}

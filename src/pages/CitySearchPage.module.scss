@@ -1,0 +1,95 @@
+.container {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.backButton {
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+}
+
+.backIcon {
+  width: 24px;
+  height: 24px;
+}
+
+.searchInput {
+  flex: 1;
+  height: 44px;
+  padding: 0 16px;
+  border: none;
+  border-radius: 12px;
+  background: #f3f4f6;
+  font-size: 16px;
+  font-family: inherit;
+
+  &::placeholder {
+    color: #9ca3af;
+  }
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #6b7280;
+}
+
+.sectionIcon {
+  width: 18px;
+  height: 18px;
+}
+
+.cityRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: #f9fafb;
+  cursor: pointer;
+}
+
+.cityName {
+  font-size: 16px;
+}
+
+.actionButton {
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+}
+
+.actionIcon {
+  width: 20px;
+  height: 20px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}

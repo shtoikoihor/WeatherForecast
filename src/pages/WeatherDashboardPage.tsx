@@ -15,12 +15,16 @@ export const WeatherDashboardPage = () => {
   const currentError = useAppSelector((state) => state.weather.currentError);
 
   useEffect(() => {
+    if (data) {
+      return;
+    }
+
     navigator.geolocation.getCurrentPosition((position) => {
       const { latitude, longitude } = position.coords;
       dispatch(fetchCurrentWeather({ lat: latitude, lon: longitude }));
       dispatch(fetchForecast({ lat: latitude, lon: longitude }));
     });
-  }, []);
+  }, [data]);
 
   if (loading) {
     return (

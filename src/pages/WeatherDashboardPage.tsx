@@ -20,11 +20,17 @@ export const WeatherDashboardPage = () => {
       return;
     }
 
-    navigator.geolocation.getCurrentPosition((position) => {
-      const { latitude, longitude } = position.coords;
-      dispatch(fetchCurrentWeather({ lat: latitude, lon: longitude }));
-      dispatch(fetchForecast({ lat: latitude, lon: longitude }));
-    });
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        dispatch(fetchCurrentWeather({ lat: latitude, lon: longitude }));
+        dispatch(fetchForecast({ lat: latitude, lon: longitude }));
+      },
+      () => {
+        dispatch(fetchCurrentWeather({ lat: 52.52, lon: 13.405 }));
+        dispatch(fetchForecast({ lat: 52.52, lon: 13.405 }));
+      },
+    );
   }, [data]);
 
   if (loading) {

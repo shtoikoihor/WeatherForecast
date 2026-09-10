@@ -1,0 +1,21 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 28px;
+}
+
+.author {
+  color: #6b7280;
+  font-size: 16px;
+}
+
+.linksContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+}
+
+.linkIcon {
+  width: 32px;
+  height: 32px;
+}

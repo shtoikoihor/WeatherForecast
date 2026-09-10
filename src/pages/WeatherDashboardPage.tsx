@@ -7,6 +7,7 @@ import { HourlyForecast } from "../components/HourlyForecast/HourlyForecast";
 import { DailyForecast } from "../components/DailyForecast/DailyForecast";
 import { MetricsGrid } from "../components/MetricsGrid/MetricsGrid";
 import styles from "./WeatherDashboardPage.module.scss";
+import { Footer } from "../components/Footer/Footer";
 
 export const WeatherDashboardPage = () => {
   const dispatch = useAppDispatch();
@@ -50,6 +51,7 @@ export const WeatherDashboardPage = () => {
       <HourlyForecast />
       <DailyForecast />
       <MetricsGrid />
+      <Footer />
     </div>
   );
 };

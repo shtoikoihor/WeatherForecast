@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="100%" height="100%">
+  <!-- Фон круга -->
+  <rect width="64" height="64" rx="16" fill="#3B82F6"/>
+
+  <!-- Сонце -->
+  <circle cx="40" cy="24" r="9" fill="#FBBF24"/>
+  
+  <!-- Промені сонця -->
+  <path d="M40 11v2M40 35v2M27 24h2M53 24h2M31 15l1.5 1.5M47 31l1.5 1.5M31 33l1.5-1.5M47 17l1.5-1.5" 
+        stroke="#FBBF24" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Хмарка -->
+  <path d="M 20 46 
+           C 14 46, 12 40, 16 35 
+           C 15 28, 24 25, 29 29 
+           C 33 24, 43 27, 42 34 
+           C 47 35, 47 43, 41 46 Z" 
+        fill="#FFFFFF"/>
+
+  <!-- Капля дощу -->
+  <path d="M 26 50 C 26 50, 29 55, 26 57 C 24.5 57, 23 55.5, 23 54 C 23 52.5, 26 50, 26 50 Z" 
+        fill="#60A5FA"/>
+</svg>

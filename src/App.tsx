@@ -5,7 +5,7 @@ import { CitySearchPage } from "./pages/CitySearchPage";
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/WeatherForecast">
       <Routes>
         <Route path="/" element={<WeatherDashboardPage />} />
         <Route path="/search" element={<CitySearchPage />} />

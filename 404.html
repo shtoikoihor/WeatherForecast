@@ -14,9 +14,23 @@
       rel="stylesheet"
     />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      // set the theme before first paint so there is no flash of the wrong one
+      (function () {
+        try {
+          var theme = localStorage.getItem("theme");
+          if (theme !== "light" && theme !== "dark") {
+            theme = window.matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light";
+          }
+          document.documentElement.setAttribute("data-theme", theme);
+        } catch (e) {}
+      })();
+    </script>
     <title>Weather Forecast</title>
-    <script type="module" crossorigin src="/WeatherForecast/assets/index-BGLFEzNI.js"></script>
-    <link rel="stylesheet" crossorigin href="/WeatherForecast/assets/index-CrTxvd4k.css">
+    <script type="module" crossorigin src="/WeatherForecast/assets/index-wBI9yJkS.js"></script>
+    <link rel="stylesheet" crossorigin href="/WeatherForecast/assets/index-Cz60wChu.css">
   </head>
   <body>
     <div id="root"></div>

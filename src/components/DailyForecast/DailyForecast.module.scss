@@ -25,3 +25,52 @@
   display: flex;
   flex-direction: column;
 }
+
+// each day is a button; the negative margin lets the bubble reach past the
+// text without moving the columns
+.day {
+  display: block;
+  width: calc(100% + 24px);
+  margin: 0 -12px;
+  padding: 0 12px;
+  border: 1px solid transparent;
+  border-bottom: 1px solid var(--divider);
+  border-radius: 16px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background 0.25s,
+    border-color 0.25s,
+    box-shadow 0.25s;
+
+  &:last-child {
+    border-bottom-color: transparent;
+  }
+
+  @include on-hover {
+    background: var(--accent-soft);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+}
+
+// the day the hourly row is showing: a small glass bubble
+.dayActive,
+.dayActive:last-child {
+  background: var(--tile);
+  border-color: var(--card-border);
+  box-shadow:
+    0 4px 16px var(--shadow),
+    inset 0 1px 0 var(--card-border);
+  backdrop-filter: blur(12px) saturate(140%);
+
+  @include on-hover {
+    background: var(--tile);
+  }
+}

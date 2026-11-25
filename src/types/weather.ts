@@ -21,6 +21,8 @@ export interface HourlyForecast {
   currentTime: string;
   // weekday name of that local time ("Thursday")
   dayName: string;
+  // local date "YYYY-MM-DD", links an hour to its day in the daily list
+  dayKey: string;
   temperature: number;
   tempFeels: number;
   // range of that day, not of the slot
@@ -33,6 +35,7 @@ export interface HourlyForecast {
 }
 
 export interface DailyForecast {
+  dayKey: string;
   currentDay: string;
   tempMin: number;
   tempMax: number;

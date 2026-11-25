@@ -136,7 +136,7 @@ export const getForecast = async (
     grouped.set(entry.local.day, group);
   });
 
-  const hourly: HourlyForecast[] = items.slice(0, 8).map(({ item, local }) => {
+  const hourly: HourlyForecast[] = items.map(({ item, local }) => {
     const dayTemps = (grouped.get(local.day) ?? []).map(
       (entry) => entry.item.main.temp,
     );
@@ -144,6 +144,7 @@ export const getForecast = async (
     return {
       currentTime: local.time,
       dayName: local.weekday,
+      dayKey: local.day,
       temperature: item.main.temp,
       tempFeels: item.main.feels_like,
       // the slot has no real min/max, so show the range of its day
@@ -162,6 +163,7 @@ export const getForecast = async (
     const iconSource = (noonEntry ?? group[0]).item;
 
     return {
+      dayKey: group[0].local.day,
       currentDay: index === 0 ? "Today" : group[0].local.weekday,
       tempMin: Math.min(...temps),
       tempMax: Math.max(...temps),

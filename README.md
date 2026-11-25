@@ -11,7 +11,7 @@ A weather dashboard built with **React**, **TypeScript** and **Redux Toolkit**.
 It detects your location, shows the current weather, a scrollable hourly forecast and a 6-day forecast, and lets you search for any city and save your favourites. It comes with a light and a dark theme and switchable units.
 Real weather data comes from the **OpenWeatherMap API**.
 
-This is a personal pet project, designed and built from scratch.
+This is a personal pet project. I built the app and its logic myself; the visual design (the "Frosted Sky" look with light and dark themes) was created with Claude (Anthropic).
 
 ---
 
@@ -68,6 +68,14 @@ This is a personal pet project, designed and built from scratch.
 
 ---
 
+## 🤝 How It Was Built
+
+- **Built by me:** the project structure, the OpenWeatherMap integration (geocoding, current weather, forecast), the Redux Toolkit store with weather and favourites slices, geolocation with a fallback, debounced city search, favourites in LocalStorage, the first version of the UI and the deployment to GitHub Pages.
+- **Designed with Claude:** the "Frosted Sky" visual design, including the light and dark themes, the glass cards and the responsive layout.
+- **Added together with the redesign (implemented with Claude as a pair-programming assistant, then tested by me):** the °C / °F and m/s / km/h switch, picking an hour to show on the main card, the scrollable 5-day hourly row linked to the daily list, and local-time handling of the forecast.
+
+---
+
 ## 🧠 What I Practised
 
 - Structuring a Redux Toolkit store with separate slices for weather and favourites
@@ -75,10 +83,6 @@ This is a personal pet project, designed and built from scratch.
 - Transforming raw API responses into typed data for the UI (`types/weather.ts`)
 - Grouping and aggregating forecast data (`Math.min` / `Math.max` per day)
 - Debouncing user input with `useEffect` + `setTimeout` cleanup
-- Theming with CSS variables and SCSS modules (light / dark, set before first paint to avoid a flash)
-- Keeping UI settings (theme, units) in a Redux slice and persisting them
-- A memoized selector (`createSelector`) that derives what the dashboard shows from the selected hour
-- Scroll behaviour: drag-to-scroll, scroll snapping and syncing one list to another by scroll position
 - Deploying a `BrowserRouter` app to GitHub Pages (Vite `base` + `404.html` fallback)
 
 ---

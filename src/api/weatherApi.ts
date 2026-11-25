@@ -9,6 +9,17 @@ import type {
 const BASE_URL = "https://api.openweathermap.org";
 const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 
+interface ForecastItem {
+  dt: number;
+  main: { temp: number };
+  weather: { icon: string }[];
+}
+
+interface ForecastResponse {
+  list: ForecastItem[];
+  city: { timezone: number };
+}
+
 export const getWeatherKind = (icon: string): WeatherKind => {
   const code = icon.slice(0, 2);
 
@@ -33,7 +44,7 @@ export const getWeatherKind = (icon: string): WeatherKind => {
 
 export const searchCities = async (query: string): Promise<City[]> => {
   const response = await fetch(
-    `${BASE_URL}/geo/1.0/direct?q=${query}&limit=5&appid=${API_KEY}`,
+    `${BASE_URL}/geo/1.0/direct?q=${encodeURIComponent(query)}&limit=5&appid=${API_KEY}`,
   );
 
   if (!response.ok) {
@@ -90,7 +101,7 @@ export const getForecast = async (
     throw new Error("Forecast search failed");
   }
 
-  const data = await response.json();
+  const data: ForecastResponse = await response.json();
   const dayNames = [
     "Sunday",
     "Monday",
@@ -100,43 +111,46 @@ export const getForecast = async (
     "Friday",
     "Saturday",
   ];
-  const hourly: HourlyForecast[] = data.list.slice(0, 8).map((item: any) => {
-    const [, time] = item.dt_txt.split(" ");
+  const pad = (n: number) => String(n).padStart(2, "0");
+
+  // dt is UTC; shift by the city's offset so times and day boundaries are local
+  const toLocal = (dt: number) => {
+    const date = new Date((dt + data.city.timezone) * 1000);
 
     return {
-      currentTime: time.slice(0, 5),
-      temperature: item.main.temp,
-      kind: getWeatherKind(item.weather[0].icon),
+      day: `${date.getUTCFullYear()}-${pad(date.getUTCMonth() + 1)}-${pad(date.getUTCDate())}`,
+      time: `${pad(date.getUTCHours())}:${pad(date.getUTCMinutes())}`,
+      weekday: dayNames[date.getUTCDay()],
     };
+  };
+
+  const items = data.list.map((item) => ({ item, local: toLocal(item.dt) }));
+
+  const hourly: HourlyForecast[] = items.slice(0, 8).map(({ item, local }) => ({
+    currentTime: local.time,
+    dayName: local.weekday,
+    temperature: item.main.temp,
+    kind: getWeatherKind(item.weather[0].icon),
+  }));
+
+  const grouped = new Map<string, typeof items>();
+
+  items.forEach((entry) => {
+    const group = grouped.get(entry.local.day) ?? [];
+
+    group.push(entry);
+    grouped.set(entry.local.day, group);
   });
 
-  const grouped: Record<string, any[]> = {};
-
-  data.list.forEach((item: any) => {
-    const [date] = item.dt_txt.split(" ");
-
-    if (!grouped[date]) {
-      grouped[date] = [];
-    }
-
-    grouped[date].push(item);
-  });
-
-  const dates = Object.keys(grouped);
-  const daily: DailyForecast[] = dates.map((date) => {
-    const group = grouped[date];
-    const temps = group.map((item) => item.main.temp);
-
-    const tempMin = Math.min(...temps);
-    const tempMax = Math.max(...temps);
-
-    const noonEntry = group.find((item) => item.dt_txt.includes("12:00:00"));
-    const iconSource = noonEntry ?? group[0];
+  const daily: DailyForecast[] = [...grouped.values()].map((group, index) => {
+    const temps = group.map(({ item }) => item.main.temp);
+    const noonEntry = group.find(({ local }) => local.time === "12:00");
+    const iconSource = (noonEntry ?? group[0]).item;
 
     return {
-      currentDay: dayNames[new Date(date).getDay()],
-      tempMin,
-      tempMax,
+      currentDay: index === 0 ? "Today" : group[0].local.weekday,
+      tempMin: Math.min(...temps),
+      tempMax: Math.max(...temps),
       kind: getWeatherKind(iconSource.weather[0].icon),
     };
   });

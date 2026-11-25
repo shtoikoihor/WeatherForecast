@@ -17,7 +17,10 @@ export interface WeatherData {
 }
 
 export interface HourlyForecast {
+  // local time at the forecast location, "HH:MM"
   currentTime: string;
+  // weekday name of that local time ("Thursday")
+  dayName: string;
   temperature: number;
   kind: WeatherKind;
 }

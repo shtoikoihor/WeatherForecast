@@ -8,7 +8,7 @@
 ![OpenWeather](https://img.shields.io/badge/OpenWeatherMap_API-EB6E4B?style=flat&logo=openweathermap&logoColor=white)
 
 A weather dashboard built with **React**, **TypeScript** and **Redux Toolkit**.
-It detects your location, shows the current weather, an hourly and a 6-day forecast, and lets you search for any city and save your favourites.
+It detects your location, shows the current weather, a scrollable hourly forecast and a 6-day forecast, and lets you search for any city and save your favourites. It comes with a light and a dark theme and switchable units.
 Real weather data comes from the **OpenWeatherMap API**.
 
 This is a personal pet project, designed and built from scratch.
@@ -47,9 +47,13 @@ This is a personal pet project, designed and built from scratch.
 ### 📍 Weather dashboard
 - **Automatic location** — asks for geolocation and shows the weather where you are; if access is denied, falls back to Berlin
 - **Current weather** — temperature, description, daily min / max and a weather icon
-- **Hourly forecast** — the next 24 hours in 3-hour steps
-- **Daily forecast** — the coming days with min / max temperatures, calculated by grouping the 3-hour forecast by date; the icon is taken from the midday entry
+- **Hourly forecast** — the whole 5-day forecast in 3-hour steps, scrollable by touch, mouse drag, trackpad or arrow buttons
+- **Pick an hour** — click any hour to see that time on the main card, with its description, humidity, wind and feels-like temperature; **Now** returns to the current weather
+- **Daily forecast** — the coming days with min / max temperatures, calculated by grouping the 3-hour forecast by date; the icon is taken from the midday entry, with a range bar on a shared weekly scale; the day the hourly row is scrolled to is highlighted, and clicking a day scrolls the row to it
 - **Metrics** — humidity, wind speed and "feels like" temperature
+- **Light / dark theme** — follows the system setting until you choose one; the choice is remembered
+- **Units** — °C / °F and m/s / km/h, remembered between visits
+- **Local time** — forecast times and day boundaries use the time zone of the selected city
 - **Loading and error states** — skeleton placeholders while data is loading and an error card if a request fails
 
 ### 🔍 City search
@@ -71,6 +75,10 @@ This is a personal pet project, designed and built from scratch.
 - Transforming raw API responses into typed data for the UI (`types/weather.ts`)
 - Grouping and aggregating forecast data (`Math.min` / `Math.max` per day)
 - Debouncing user input with `useEffect` + `setTimeout` cleanup
+- Theming with CSS variables and SCSS modules (light / dark, set before first paint to avoid a flash)
+- Keeping UI settings (theme, units) in a Redux slice and persisting them
+- A memoized selector (`createSelector`) that derives what the dashboard shows from the selected hour
+- Scroll behaviour: drag-to-scroll, scroll snapping and syncing one list to another by scroll position
 - Deploying a `BrowserRouter` app to GitHub Pages (Vite `base` + `404.html` fallback)
 
 ---
@@ -148,8 +156,8 @@ npm run deploy   # publish to GitHub Pages
 ## 🔮 Possible Improvements
 
 - UV index (not included in the free OpenWeatherMap endpoints)
-- Celsius / Fahrenheit switch
 - Weather-based background themes
+- A search popover and a banner when location access is denied
 
 ---
 

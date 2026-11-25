@@ -22,6 +22,13 @@ export interface HourlyForecast {
   // weekday name of that local time ("Thursday")
   dayName: string;
   temperature: number;
+  tempFeels: number;
+  // range of that day, not of the slot
+  tempMin: number;
+  tempMax: number;
+  description: string;
+  humidity: number;
+  windSpeed: number;
   kind: WeatherKind;
 }
 

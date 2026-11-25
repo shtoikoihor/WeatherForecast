@@ -1,4 +1,5 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, createSelector } from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
 import type {
   DailyForecast,
   HourlyForecast,
@@ -13,9 +14,11 @@ interface WeatherState {
   loading: boolean;
   currentError: string | null;
   forecastError: string | null;
+  selectedHour: number | null;
 }
 
 const initialState: WeatherState = {
+  selectedHour: null,
   data: null,
   hourly: [],
   daily: [],
@@ -44,7 +47,12 @@ export const fetchForecast = createAsyncThunk(
 const weatherSlice = createSlice({
   name: "weather",
   initialState,
-  reducers: {},
+  reducers: {
+    // index into `hourly`; null means "Now" (the real current weather)
+    selectHour: (state, action: PayloadAction<number | null>) => {
+      state.selectedHour = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchCurrentWeather.pending, (state) => {
@@ -54,6 +62,7 @@ const weatherSlice = createSlice({
       .addCase(fetchCurrentWeather.fulfilled, (state, action) => {
         state.loading = false;
         state.data = action.payload;
+        state.selectedHour = null;
       })
       .addCase(fetchCurrentWeather.rejected, (state, action) => {
         state.loading = false;
@@ -67,6 +76,7 @@ const weatherSlice = createSlice({
         state.loading = false;
         state.hourly = action.payload.hourly;
         state.daily = action.payload.daily;
+        state.selectedHour = null;
       })
       .addCase(fetchForecast.rejected, (state, action) => {
         state.loading = false;
@@ -74,5 +84,45 @@ const weatherSlice = createSlice({
       });
   },
 });
+
+export const { selectHour } = weatherSlice.actions;
+
+export interface DisplayWeather extends WeatherData {
+  // set when a forecast hour is selected, e.g. "Thursday, 01:00"
+  caption?: string;
+}
+
+// what the hero and metrics show: the selected forecast hour, else current weather
+export const selectDisplayWeather = createSelector(
+  [
+    (state: { weather: WeatherState }) => state.weather.data,
+    (state: { weather: WeatherState }) => state.weather.hourly,
+    (state: { weather: WeatherState }) => state.weather.selectedHour,
+  ],
+  (data, hourly, selectedHour): DisplayWeather | null => {
+    if (!data) {
+      return null;
+    }
+
+    const hour = selectedHour === null ? undefined : hourly[selectedHour];
+
+    if (!hour) {
+      return data;
+    }
+
+    return {
+      ...data,
+      temperature: hour.temperature,
+      tempFeels: hour.tempFeels,
+      tempMin: hour.tempMin,
+      tempMax: hour.tempMax,
+      description: hour.description,
+      humidity: hour.humidity,
+      windSpeed: hour.windSpeed,
+      kind: hour.kind,
+      caption: `${hour.dayName}, ${hour.currentTime}`,
+    };
+  },
+);
 
 export default weatherSlice.reducer;

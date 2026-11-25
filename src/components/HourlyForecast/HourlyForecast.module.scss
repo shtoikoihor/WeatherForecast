@@ -46,6 +46,26 @@
   }
 }
 
+.item {
+  flex-shrink: 0;
+  padding: 0;
+  border: none;
+  border-radius: 16px;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  transition: transform 0.15s;
+
+  @include on-hover {
+    transform: translateY(-2px);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+}
+
 .divider {
   display: flex;
   flex-direction: column;

@@ -11,8 +11,9 @@ const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 
 interface ForecastItem {
   dt: number;
-  main: { temp: number };
-  weather: { icon: string }[];
+  main: { temp: number; feels_like: number; humidity: number };
+  weather: { icon: string; description: string }[];
+  wind: { speed: number };
 }
 
 interface ForecastResponse {
@@ -126,13 +127,6 @@ export const getForecast = async (
 
   const items = data.list.map((item) => ({ item, local: toLocal(item.dt) }));
 
-  const hourly: HourlyForecast[] = items.slice(0, 8).map(({ item, local }) => ({
-    currentTime: local.time,
-    dayName: local.weekday,
-    temperature: item.main.temp,
-    kind: getWeatherKind(item.weather[0].icon),
-  }));
-
   const grouped = new Map<string, typeof items>();
 
   items.forEach((entry) => {
@@ -140,6 +134,26 @@ export const getForecast = async (
 
     group.push(entry);
     grouped.set(entry.local.day, group);
+  });
+
+  const hourly: HourlyForecast[] = items.slice(0, 8).map(({ item, local }) => {
+    const dayTemps = (grouped.get(local.day) ?? []).map(
+      (entry) => entry.item.main.temp,
+    );
+
+    return {
+      currentTime: local.time,
+      dayName: local.weekday,
+      temperature: item.main.temp,
+      tempFeels: item.main.feels_like,
+      // the slot has no real min/max, so show the range of its day
+      tempMin: Math.min(...dayTemps),
+      tempMax: Math.max(...dayTemps),
+      description: item.weather[0].description,
+      humidity: item.main.humidity,
+      windSpeed: item.wind.speed,
+      kind: getWeatherKind(item.weather[0].icon),
+    };
   });
 
   const daily: DailyForecast[] = [...grouped.values()].map((group, index) => {

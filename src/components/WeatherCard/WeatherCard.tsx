@@ -47,8 +47,10 @@ interface WeatherCardProps {
   unit?: string;
   description?: string;
   metricIcon?: WeatherMetricIcon;
-  // hourly: highlight the first item
-  isNow?: boolean;
+  // current: shown above the icon when a forecast hour is displayed
+  caption?: string;
+  // hourly: highlight the chosen item
+  isSelected?: boolean;
   // daily: week-wide scale (°C) for the range bar, and the current temp marker
   rangeMin?: number;
   rangeMax?: number;
@@ -94,7 +96,8 @@ export const WeatherCard = ({
   unit,
   description,
   metricIcon,
-  isNow = false,
+  caption,
+  isSelected = false,
   rangeMin,
   rangeMax,
   marker,
@@ -128,6 +131,7 @@ export const WeatherCard = ({
 
     return (
       <div className={styles.currentCard}>
+        {caption && <span className={styles.caption}>{caption}</span>}
         <img className={styles.currentIcon} src={iconSrc} alt={description} />
         <span className={styles.temperature}>
           {formatTemp(temperature, tempUnit)}
@@ -168,7 +172,7 @@ export const WeatherCard = ({
 
     return (
       <div
-        className={`${styles.hourlyContainer} ${isNow ? styles.hourlyNow : ""}`}
+        className={`${styles.hourlyContainer} ${isSelected ? styles.hourlySelected : ""}`}
       >
         <span className={styles.hourlyLabel}>{label}</span>
         <img className={styles.hourlyIcons} src={iconSrc} alt={kind} />

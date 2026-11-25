@@ -1,10 +1,11 @@
 import { useAppSelector } from "../../store/hooks";
+import { selectDisplayWeather } from "../../store/weatherSlice";
 import { formatTemp, formatWind } from "../../utils/units";
 import { WeatherCard } from "../WeatherCard/WeatherCard";
 import styles from "./MetricsGrid.module.scss";
 
 export const MetricsGrid = () => {
-  const data = useAppSelector((state) => state.weather.data);
+  const data = useAppSelector(selectDisplayWeather);
   const currentError = useAppSelector((state) => state.weather.currentError);
   const { tempUnit, windUnit } = useAppSelector((state) => state.settings);
 

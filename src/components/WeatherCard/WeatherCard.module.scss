@@ -18,6 +18,15 @@
   }
 }
 
+.caption {
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent-text);
+  font-size: 13px;
+  font-weight: 600;
+}
+
 .currentIcon {
   width: 72px;
   height: 72px;
@@ -111,7 +120,7 @@
   }
 }
 
-.hourlyNow {
+.hourlySelected {
   border: 1.5px solid var(--accent);
   background: var(--accent-soft);
 

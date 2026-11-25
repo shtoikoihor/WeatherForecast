@@ -1,6 +1,10 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { fetchCurrentWeather, fetchForecast } from "../store/weatherSlice";
+import {
+  fetchCurrentWeather,
+  fetchForecast,
+  selectDisplayWeather,
+} from "../store/weatherSlice";
 import { Header } from "../components/Header/Header";
 import { WeatherCard } from "../components/WeatherCard/WeatherCard";
 import { HourlyForecast } from "../components/HourlyForecast/HourlyForecast";
@@ -12,6 +16,7 @@ import { Footer } from "../components/Footer/Footer";
 export const WeatherDashboardPage = () => {
   const dispatch = useAppDispatch();
   const data = useAppSelector((state) => state.weather.data);
+  const display = useAppSelector(selectDisplayWeather);
   const loading = useAppSelector((state) => state.weather.loading);
   const currentError = useAppSelector((state) => state.weather.currentError);
 
@@ -53,11 +58,12 @@ export const WeatherDashboardPage = () => {
             <WeatherCard
               type="current"
               state={currentError ? "error" : "default"}
-              temperature={data?.temperature}
-              description={data?.description}
-              kind={data?.kind}
-              tempMin={data?.tempMin}
-              tempMax={data?.tempMax}
+              temperature={display?.temperature}
+              description={display?.description}
+              kind={display?.kind}
+              tempMin={display?.tempMin}
+              tempMax={display?.tempMax}
+              caption={display?.caption}
             />
           </div>
           <div className={styles.heroMetrics}>

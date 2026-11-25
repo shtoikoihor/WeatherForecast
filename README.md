@@ -21,12 +21,6 @@ This is a personal pet project. I built the app and its logic myself; the visual
 
 ---
 
-## 🎨 Design Reference
-
-[Figma — Weather App Design](https://www.figma.com/design/IDprcdwcpRkUL0eD12h9ER/Weather-App-Design)
-
----
-
 ## 🛠 Technologies Used
 
 | Category | Tools |

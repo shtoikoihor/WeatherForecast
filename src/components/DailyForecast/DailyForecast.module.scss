@@ -1,5 +1,27 @@
-.container {
+@use "../../styles/mixins" as *;
+
+.card {
+  @include glass;
   display: flex;
   flex-direction: column;
-  padding-bottom: 12px;
+  gap: 8px;
+  padding: 16px 16px 4px;
+
+  @include desktop-up {
+    padding: 24px 24px 8px;
+  }
+}
+
+.title {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+
+.rows {
+  display: flex;
+  flex-direction: column;
 }

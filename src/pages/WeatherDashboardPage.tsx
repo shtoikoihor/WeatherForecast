@@ -31,7 +31,7 @@ export const WeatherDashboardPage = () => {
         dispatch(fetchForecast({ lat: 52.52, lon: 13.405 }));
       },
     );
-  }, [data]);
+  }, [data, dispatch]);
 
   if (loading) {
     return (
@@ -42,21 +42,36 @@ export const WeatherDashboardPage = () => {
     );
   }
 
+  // the metrics render twice: inside the hero card on desktop, below the
+  // forecast on smaller screens; CSS shows exactly one of them
   return (
-    <div>
+    <div className={styles.page}>
       <Header />
-      <WeatherCard
-        type="current"
-        state={currentError ? "error" : "default"}
-        temperature={data?.temperature}
-        description={data?.description}
-        kind={data?.kind}
-        tempMin={data?.tempMin}
-        tempMax={data?.tempMax}
-      />
-      <HourlyForecast />
-      <DailyForecast />
-      <MetricsGrid />
+      <main className={styles.body}>
+        <section className={styles.hero} aria-label="Current weather">
+          <div className={styles.heroMain}>
+            <WeatherCard
+              type="current"
+              state={currentError ? "error" : "default"}
+              temperature={data?.temperature}
+              description={data?.description}
+              kind={data?.kind}
+              tempMin={data?.tempMin}
+              tempMax={data?.tempMax}
+            />
+          </div>
+          <div className={styles.heroMetrics}>
+            <MetricsGrid />
+          </div>
+        </section>
+        <div className={styles.forecast}>
+          <HourlyForecast />
+          <DailyForecast />
+        </div>
+        <div className={styles.metricsBelow}>
+          <MetricsGrid />
+        </div>
+      </main>
       <Footer />
     </div>
   );

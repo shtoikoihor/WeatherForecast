@@ -37,8 +37,8 @@ export const CitySearchPage = () => {
   };
 
   useEffect(() => {
+    // results are only shown while there is a query, so nothing to reset here
     if (query === "") {
-      setResults([]);
       return;
     }
 
@@ -54,12 +54,12 @@ export const CitySearchPage = () => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <button className={styles.backButton} onClick={() => navigate("/")}>
-          <img
-            className={styles.backIcon}
-            src={backIcon}
-            alt="back navigation"
-          />
+        <button
+          className={styles.backButton}
+          aria-label="Back"
+          onClick={() => navigate("/")}
+        >
+          <img className={styles.backIcon} src={backIcon} alt="" />
         </button>
         <input
           className={styles.searchInput}
@@ -94,7 +94,7 @@ export const CitySearchPage = () => {
                 onClick={(e) => handleRemoveFavourite(e, city)}
               >
                 <img
-                  className={styles.actionIcon}
+                  className={styles.actionIconMono}
                   src={removeButton}
                   alt="remove button"
                 />
@@ -135,7 +135,7 @@ export const CitySearchPage = () => {
                     onClick={(e) => handleAddFavourite(e, city)}
                   >
                     <img
-                      className={styles.actionIcon}
+                      className={styles.actionIconMono}
                       src={favouriteIconAdd}
                       alt="favourite button"
                     />

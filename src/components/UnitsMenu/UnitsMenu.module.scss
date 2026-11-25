@@ -1,0 +1,97 @@
+@use "../../styles/mixins" as *;
+
+.root {
+  position: relative;
+}
+
+.pill {
+  height: 36px;
+  padding: 0 12px;
+  border: 1px solid var(--divider);
+  border-radius: 999px;
+  background: var(--tile);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  @include on-hover {
+    background: var(--accent-soft);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+}
+
+// the wind unit is dropped on narrow screens to keep the header on one line
+.pillWind {
+  display: none;
+
+  @include tablet-up {
+    display: inline;
+  }
+}
+
+.popover {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-sizing: border-box;
+  width: 280px;
+  padding: 16px;
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  background: var(--card-solid);
+  box-shadow: 0 8px 32px var(--shadow);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.rowLabel {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-2);
+}
+
+.segmented {
+  display: flex;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 10px;
+  background: var(--divider);
+}
+
+.segment {
+  padding: 6px 14px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-2);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+
+  &[aria-checked="true"] {
+    background: var(--card-solid);
+    color: var(--text);
+    font-weight: 600;
+    box-shadow: 0 1px 2px var(--shadow);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+  }
+}

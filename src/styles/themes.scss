@@ -1,0 +1,61 @@
+// Frosted Sky design tokens. Light is the default, dark is switched with
+// <html data-theme="dark"> (set before first paint from index.html).
+
+:root {
+  color-scheme: light;
+
+  --bg-from: #dcebff;
+  --bg-to: #f4f8ff;
+  --blob-a: rgba(59, 130, 246, 0.2);
+  --blob-b: rgba(245, 158, 11, 0.16);
+
+  --card: rgba(255, 255, 255, 0.62);
+  --card-solid: #f1f6ff;
+  --card-border: rgba(255, 255, 255, 0.7);
+  --shadow: rgba(40, 70, 130, 0.12);
+
+  --text: #0f1b33;
+  --text-2: #4a5b78;
+  --accent: #3b82f6;
+  --accent-text: #1d4ed8;
+  --accent-soft: rgba(59, 130, 246, 0.14);
+
+  --tile: rgba(255, 255, 255, 0.45);
+  --divider: rgba(15, 27, 51, 0.08);
+  --skeleton: rgba(15, 27, 51, 0.08);
+
+  --sun: #f59e0b;
+  --error: #dc2626;
+
+  // for monochrome <img> icons that ship with a fixed dark stroke
+  --icon-mono-filter: none;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg-from: #0b1220;
+  --bg-to: #16233f;
+  --blob-a: rgba(122, 176, 255, 0.18);
+  --blob-b: rgba(251, 191, 36, 0.08);
+
+  --card: rgba(255, 255, 255, 0.07);
+  --card-solid: #141e33;
+  --card-border: rgba(255, 255, 255, 0.12);
+  --shadow: rgba(0, 0, 0, 0.45);
+
+  --text: #eaf0ff;
+  --text-2: #9fb0cf;
+  --accent: #7ab0ff;
+  --accent-text: #9cc4ff;
+  --accent-soft: rgba(122, 176, 255, 0.18);
+
+  --tile: rgba(255, 255, 255, 0.05);
+  --divider: rgba(255, 255, 255, 0.08);
+  --skeleton: rgba(255, 255, 255, 0.08);
+
+  --sun: #fbbf24;
+  --error: #f87171;
+
+  --icon-mono-filter: invert(1) brightness(0.92);
+}

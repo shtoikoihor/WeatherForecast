@@ -2,5 +2,9 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 12px;
-  padding: 24px 0;
+
+  // an odd tile out takes the full row instead of leaving a hole
+  > :last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
 }

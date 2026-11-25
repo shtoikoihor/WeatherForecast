@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import searchButton from "../../assets/buttons/search_button.svg";
 import styles from "./Header.module.scss";
 import location from "../../assets/pins/location.svg";
+import { ThemeToggle } from "../ThemeToggle/ThemeToggle";
+import { UnitsMenu } from "../UnitsMenu/UnitsMenu";
 
 export const Header = () => {
   const navigate = useNavigate();
@@ -14,13 +16,21 @@ export const Header = () => {
         <img className={styles.location} src={location} alt="location" />
         <span className={styles.cityName}>{cityName}</span>
       </span>
-      <button className={styles.button} onClick={() => navigate("/search")}>
-        <img
-          className={styles.buttonIcon}
-          src={searchButton}
-          alt="search button"
-        />
-      </button>
+      <div className={styles.actions}>
+        <button
+          className={styles.button}
+          aria-label="Search city"
+          onClick={() => navigate("/search")}
+        >
+          <img
+            className={styles.buttonIcon}
+            src={searchButton}
+            alt=""
+          />
+        </button>
+        <UnitsMenu />
+        <ThemeToggle />
+      </div>
     </div>
   );
 };

@@ -1,10 +1,13 @@
-//#region  imports
+//#region imports
+import type { CSSProperties } from "react";
 import type {
   WeatherCardState,
   WeatherCardType,
   WeatherKind,
   WeatherMetricIcon,
 } from "../../types/weather";
+import { useAppSelector } from "../../store/hooks";
+import { formatTemp } from "../../utils/units";
 import sunIcon from "../../assets/icons/sun.svg";
 import cloudIcon from "../../assets/icons/cloud.svg";
 import rainIcon from "../../assets/icons/rain.svg";
@@ -41,26 +44,41 @@ interface WeatherCardProps {
   kind?: WeatherKind;
   label?: string;
   value?: string;
+  unit?: string;
   description?: string;
   metricIcon?: WeatherMetricIcon;
+  // hourly: highlight the first item
+  isNow?: boolean;
+  // daily: week-wide scale (°C) for the range bar, and the current temp marker
+  rangeMin?: number;
+  rangeMax?: number;
+  marker?: number;
 }
 //#endregion
 
 //#region transformation
-const formatTemp = (temp: number | undefined): string => {
-  if (temp === undefined) {
-    return "-";
-  }
-
-  return `${Math.round(temp)}°`;
-};
-
 const capitalizeFirst = (text: string | undefined): string => {
   if (text === undefined) {
     return "-";
   }
 
   return text.charAt(0).toUpperCase() + text.slice(1);
+};
+
+const percent = (value: number, min: number, span: number): number =>
+  ((value - min) / span) * 100;
+
+const getBarStyle = (
+  tempMin: number,
+  tempMax: number,
+  rangeMin: number,
+  rangeMax: number,
+): CSSProperties => {
+  const span = rangeMax - rangeMin || 1;
+  const width = Math.max(8, percent(tempMax, tempMin, span));
+  const left = Math.min(percent(tempMin, rangeMin, span), 100 - width);
+
+  return { left: `${left}%`, width: `${width}%` };
 };
 //#endregion
 
@@ -73,9 +91,15 @@ export const WeatherCard = ({
   kind,
   label,
   value,
+  unit,
   description,
   metricIcon,
+  isNow = false,
+  rangeMin,
+  rangeMax,
+  marker,
 }: WeatherCardProps) => {
+  const tempUnit = useAppSelector((appState) => appState.settings.tempUnit);
   const iconSrc = kind ? weatherIcons[kind] : undefined;
   const metricIconSrc = metricIcon ? weatherMetricIcons[metricIcon] : undefined;
 
@@ -105,13 +129,17 @@ export const WeatherCard = ({
     return (
       <div className={styles.currentCard}>
         <img className={styles.currentIcon} src={iconSrc} alt={description} />
-        <span className={styles.temperature}>{formatTemp(temperature)}</span>
+        <span className={styles.temperature}>
+          {formatTemp(temperature, tempUnit)}
+        </span>
         <span className={styles.description}>
           {capitalizeFirst(description)}
         </span>
         <div className={styles.minMax}>
-          <span>↓{formatTemp(tempMin)}</span>
-          <span>↑{formatTemp(tempMax)}</span>
+          <span>↓{formatTemp(tempMin, tempUnit)}</span>
+          <span className={styles.minMaxHigh}>
+            ↑{formatTemp(tempMax, tempUnit)}
+          </span>
         </div>
       </div>
     );
@@ -139,10 +167,14 @@ export const WeatherCard = ({
     }
 
     return (
-      <div className={styles.hourlyContainer}>
+      <div
+        className={`${styles.hourlyContainer} ${isNow ? styles.hourlyNow : ""}`}
+      >
         <span className={styles.hourlyLabel}>{label}</span>
         <img className={styles.hourlyIcons} src={iconSrc} alt={kind} />
-        <span className={styles.hourlyTemp}>{formatTemp(temperature)}</span>
+        <span className={styles.hourlyTemp}>
+          {formatTemp(temperature, tempUnit)}
+        </span>
       </div>
     );
   }
@@ -166,14 +198,36 @@ export const WeatherCard = ({
       );
     }
 
+    const hasRange =
+      tempMin !== undefined && tempMax !== undefined && rangeMin !== undefined;
+    const span = hasRange && rangeMax !== undefined ? rangeMax - rangeMin || 1 : 1;
+
     return (
       <div className={styles.dailyRow}>
         <span className={styles.dailyDay}>{label}</span>
         <img className={styles.dailyIcon} src={iconSrc} alt={kind} />
-        <div className={styles.dailyTemps}>
-          <span className={styles.dailyTempMin}>{formatTemp(tempMin)}</span>
-          <span className={styles.dailyTempMax}>{formatTemp(tempMax)}</span>
+        <span className={styles.dailyTempMin}>
+          {formatTemp(tempMin, tempUnit)}
+        </span>
+        <div className={styles.dailyTrack}>
+          {hasRange && rangeMax !== undefined && (
+            <div
+              className={styles.dailyFill}
+              style={getBarStyle(tempMin, tempMax, rangeMin, rangeMax)}
+            />
+          )}
+          {hasRange && marker !== undefined && (
+            <div
+              className={styles.dailyMarker}
+              style={{
+                left: `${Math.min(100, Math.max(0, percent(marker, rangeMin, span)))}%`,
+              }}
+            />
+          )}
         </div>
+        <span className={styles.dailyTempMax}>
+          {formatTemp(tempMax, tempUnit)}
+        </span>
       </div>
     );
   }
@@ -202,7 +256,10 @@ export const WeatherCard = ({
       <div className={styles.metricCard}>
         <img className={styles.metricIcon} src={metricIconSrc} alt={label} />
         <span className={styles.metricLabel}>{label}</span>
-        <span className={styles.metricValue}>{value}</span>
+        <span className={styles.metricValueRow}>
+          <span className={styles.metricValue}>{value}</span>
+          {unit && <span className={styles.metricUnit}>{unit}</span>}
+        </span>
       </div>
     );
   }

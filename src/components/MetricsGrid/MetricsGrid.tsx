@@ -1,10 +1,12 @@
 import { useAppSelector } from "../../store/hooks";
+import { formatTemp, formatWind } from "../../utils/units";
 import { WeatherCard } from "../WeatherCard/WeatherCard";
 import styles from "./MetricsGrid.module.scss";
 
 export const MetricsGrid = () => {
   const data = useAppSelector((state) => state.weather.data);
   const currentError = useAppSelector((state) => state.weather.currentError);
+  const { tempUnit, windUnit } = useAppSelector((state) => state.settings);
 
   if (currentError) {
     return (
@@ -18,6 +20,9 @@ export const MetricsGrid = () => {
     return null;
   }
 
+  const wind = formatWind(data.windSpeed, windUnit);
+
+  // UV is not part of the free OpenWeatherMap endpoints, so there is no tile for it
   return (
     <div className={styles.container}>
       <WeatherCard
@@ -25,7 +30,8 @@ export const MetricsGrid = () => {
         state="default"
         metricIcon="humidity"
         label="Humidity"
-        value={`${data.humidity}%`}
+        value={`${data.humidity}`}
+        unit="%"
       />
 
       <WeatherCard
@@ -33,7 +39,8 @@ export const MetricsGrid = () => {
         state="default"
         metricIcon="wind"
         label="Wind"
-        value={`${data.windSpeed}`}
+        value={wind.value}
+        unit={wind.unit}
       />
 
       <WeatherCard
@@ -41,15 +48,7 @@ export const MetricsGrid = () => {
         state="default"
         metricIcon="feels"
         label="Feels like"
-        value={`${data.tempFeels.toFixed(0)}°`}
-      />
-
-      <WeatherCard
-        type="metric"
-        state="default"
-        metricIcon="uv"
-        label="UV"
-        value="-"
+        value={formatTemp(data.tempFeels, tempUnit)}
       />
     </div>
   );

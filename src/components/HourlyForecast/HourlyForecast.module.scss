@@ -1,13 +1,72 @@
-.container {
+@use "../../styles/mixins" as *;
+
+.card {
+  @include glass;
   display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  min-width: 0;
+
+  @include desktop-up {
+    padding: 24px;
+  }
+}
+
+.title {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+
+.strip {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
   overflow-x: auto;
-  gap: 12px;
-  padding: 8px 0;
+  scroll-snap-type: x proximity;
 
   scrollbar-width: none;
   -ms-overflow-style: none;
 
   &::-webkit-scrollbar {
     display: none;
+  }
+
+  // hint that the row scrolls where it does not fit
+  @include below-desktop {
+    mask-image: linear-gradient(to right, #000 calc(100% - 24px), transparent);
+  }
+
+  > * {
+    scroll-snap-align: start;
+  }
+}
+
+.divider {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 4px;
+  width: 22px;
+}
+
+.dividerLabel {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-2);
+}
+
+.dividerLine {
+  width: 1px;
+  height: 68px;
+  background: var(--divider);
+
+  @include desktop-up {
+    height: 76px;
   }
 }

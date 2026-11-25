@@ -1,36 +1,48 @@
+@use "../../styles/mixins" as *;
+
 .container {
   display: flex;
   height: 56px;
   justify-content: space-between;
   align-items: center;
+
+  @include desktop-up {
+    height: 72px;
+  }
 }
 
 .cityName {
-  font-weight: 400;
-  font-size: 16px;
+  font-weight: 500;
+  font-size: 18px;
 }
 
 .location {
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
 }
 
 .cityContainer {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  @include desktop-up {
+    gap: 8px;
+  }
 }
 
 .button {
-  background: none;
-  border: none;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  cursor: pointer;
+  @include icon-button;
 }
 
-
+.buttonIcon {
+  width: 24px;
+  height: 24px;
+  filter: var(--icon-mono-filter);
+}

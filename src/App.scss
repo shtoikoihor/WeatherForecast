@@ -1,8 +1,28 @@
+@use "./styles/themes";
+
+html {
+  background-color: var(--bg-to);
+}
+
 body {
   font-family:
     "Manrope",
     -apple-system,
     sans-serif;
   margin: 0;
-  padding: 0 16px;
+  min-height: 100vh;
+  color: var(--text);
+  background-color: var(--bg-to);
+  background-image:
+    radial-gradient(circle at 12% 8%, var(--blob-a), transparent 38%),
+    radial-gradient(circle at 92% 88%, var(--blob-b), transparent 36%),
+    linear-gradient(180deg, var(--bg-from), var(--bg-to));
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input {
+  font-family: inherit;
 }
